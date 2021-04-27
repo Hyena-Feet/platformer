@@ -1,7 +1,13 @@
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
-    mySprite.vy += -300
-    jumps += 1
+    if (jumps < 2) {
+        mySprite.vy += -300
+        jumps += 1
+    }
 })
+scene.onHitWall(SpriteKind.Player, function (sprite, location) {
+	
+})
+let jumps = 0
 let mySprite: Sprite = null
 tiles.setTilemap(tilemap`level1`)
 mySprite = sprites.create(img`
@@ -27,11 +33,12 @@ mySprite = sprites.create(img`
     .e..e.....e...e.....
     `, SpriteKind.Player)
 controller.moveSprite(mySprite, 100, 0)
-mySprite.ay = 1000
 scene.cameraFollowSprite(mySprite)
-let jumps = 0
+mySprite.ay = 1000
+jumps = 0
+tiles.placeOnTile(mySprite, tiles.getTileLocation(0, 12))
 forever(function () {
-    if (jumps < 2) {
-    	
+    if (mySprite.isHittingTile(CollisionDirection.Bottom)) {
+        jumps = 0
     }
 })
